@@ -1,0 +1,158 @@
+<div class="main-content">
+    <div class="navbar d-flex-center">
+        <div class="nav-content">
+            <div class="title">Hyperico Solutions LLP</div>
+            <div class="nav-tabs">
+                <ul>
+                    <!-- <li>Contact Us</li> -->
+                    <li>
+                        <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <mat-tab-group mat-align-tabs="center" backgroundColor="primary" >
+            <mat-tab label="Profile Details">
+                <div *ngIf="!canEdit" style="margin-top: 20px;" align='end'>
+                    <button  id="edit-button" mat-fab aria-label="Example icon button with a home icon"
+                    (click)="canEdit = !canEdit"
+                    matTooltip="Edit Details">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                </div>
+                <div class="card">
+                    <form [formGroup]="signupForm">
+                        <div>
+                            <mat-form-field class="form-group" appearance="fill">
+                                <mat-label>Name</mat-label>
+                                <input matInput placeholder="Name"  formControlName="name" required [readonly]="!canEdit">
+                                <!-- <mat-hint>Hint</mat-hint> -->
+                                <mat-error *ngIf="signupForm.get('name')?.hasError('required')">Name is required</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field class="form-group" appearance="fill">
+                                <mat-label>Address</mat-label>
+                                <textarea matInput formControlName="address" required [readonly]="!canEdit"></textarea>
+                                <mat-error *ngIf="signupForm.get('address')?.hasError('required')">Address is required</mat-error>
+                              </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field class="form-group" appearance="fill">
+                                <mat-label>Phone Number</mat-label>
+                                <input type="tel" matInput placeholder="Number" formControlName="phone" required [readonly]="!canEdit">
+                                <mat-error *ngIf="signupForm.get('phone')?.hasError('required')">Phone Number is required</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field class="form-group"  appearance="fill">
+                              <mat-label>Email/Username</mat-label>
+                              <input matInput placeholder="pat@example.com" formControlName="email" required [readonly]="!canEdit">
+                              <mat-error *ngIf="signupForm.get('email')?.hasError('required')">{{getErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div style="margin-bottom: 10px;" *ngIf="canEdit">
+                          <mat-form-field class="form-group" appearance="fill">
+                              <mat-label>Enter New password</mat-label>
+                              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                              </button>
+                              <mat-hint>Give input if want to change password.</mat-hint>
+                              <mat-error *ngIf="signupForm.get('email')?.hasError('required')">Password is required</mat-error>
+                            </mat-form-field>
+                        </div>
+                          <div *ngIf="canEdit" class="d-flex-center">
+                            <button mat-raised-button color="primary" (click)="submitForm(signupForm.value)" [disabled]="signupForm.invalid">Submit</button>
+                            <button mat-raised-button color="warn" (click)="canEdit =!canEdit">Cancel</button>
+                          </div>
+                    </form>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="isAdmin" label=" All Users ">
+             
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                        <ng-container matColumnDef="id">
+                          <th mat-header-cell *matHeaderCellDef> No. </th>
+                          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        </ng-container>
+                      
+                        <ng-container matColumnDef="nameOfUser">
+                          <th mat-header-cell *matHeaderCellDef> Name </th>
+                          <td mat-cell *matCellDef="let element"> {{element.nameOfUser}} </td>
+                        </ng-container>
+                      
+                        <ng-container matColumnDef="address">
+                          <th mat-header-cell *matHeaderCellDef> Address </th>
+                          <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+                        </ng-container>
+                      
+                        <ng-container matColumnDef="phone">
+                          <th mat-header-cell *matHeaderCellDef> Phone </th>
+                          <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef> Email </th>
+                            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                          </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+            </mat-tab>
+            <mat-tab *ngIf="isAdmin" label="Add More Users">
+              <div class="card">
+                <form [formGroup]="userForm">
+                    <div>
+                        <mat-form-field class="form-group" appearance="fill">
+                            <mat-label>Name</mat-label>
+                            <input matInput placeholder="Name"  formControlName="name" required >
+                            <!-- <mat-hint>Hint</mat-hint> -->
+                            <mat-error *ngIf="userForm.get('name')?.hasError('required')">Name is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="form-group" appearance="fill">
+                            <mat-label>Address</mat-label>
+                            <textarea matInput formControlName="address" required ></textarea>
+                            <mat-error *ngIf="userForm.get('address')?.hasError('required')">Address is required</mat-error>
+                          </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="form-group" appearance="fill">
+                            <mat-label>Phone Number</mat-label>
+                            <input type="tel" matInput placeholder="Number" formControlName="phone" required >
+                            <mat-error *ngIf="userForm.get('phone')?.hasError('required')">Phone Number is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="form-group"  appearance="fill">
+                          <mat-label>Email/Username</mat-label>
+                          <input matInput placeholder="pat@example.com" formControlName="email" required >
+                          <mat-error *ngIf="userForm.get('email')?.hasError('required')">{{getErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                      <mat-form-field class="form-group" appearance="fill">
+                          <mat-label>Enter Password</mat-label>
+                          <input matInput [type]="rehide ? 'password' : 'text'" formControlName="password">
+                          <button mat-icon-button matSuffix (click)="rehide = !rehide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{rehide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                          </button>
+                          <mat-hint>Give input if want to change password.</mat-hint>
+                          <mat-error *ngIf="userForm.get('email')?.hasError('required')">Password is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                      <div  class="d-flex-center">
+                        <button mat-raised-button color="primary" (click)="addUserForm(userForm.value)" [disabled]="userForm.invalid">Add User</button>
+                      </div>
+                </form>
+            </div>
+              
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
