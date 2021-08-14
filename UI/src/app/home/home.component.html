@@ -42,7 +42,8 @@
                         <div>
                             <mat-form-field class="form-group" appearance="fill">
                                 <mat-label>Phone Number</mat-label>
-                                <input type="tel" matInput placeholder="Number" formControlName="phone" required [readonly]="!canEdit">
+                                <input type="number" matInput placeholder="Number" formControlName="phone" required [readonly]="!canEdit">
+                                <mat-error *ngIf="signupForm.get('phone')?.hasError('max') || signupForm.get('phone')?.hasError('min') ">Please enter valid phone number!</mat-error>
                                 <mat-error *ngIf="signupForm.get('phone')?.hasError('required')">Phone Number is required</mat-error>
                             </mat-form-field>
                         </div>
@@ -124,7 +125,8 @@
                     <div>
                         <mat-form-field class="form-group" appearance="fill">
                             <mat-label>Phone Number</mat-label>
-                            <input type="tel" matInput placeholder="Number" formControlName="phone" required >
+                            <input type="number" matInput placeholder="Number" formControlName="phone" required >
+                            <mat-error *ngIf="userForm.get('phone')?.hasError('max') || userForm.get('phone')?.hasError('min') ">Please enter valid phone number!</mat-error>
                             <mat-error *ngIf="userForm.get('phone')?.hasError('required')">Phone Number is required</mat-error>
                         </mat-form-field>
                     </div>

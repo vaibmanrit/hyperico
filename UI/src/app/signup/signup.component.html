@@ -21,7 +21,8 @@
                 <div>
                     <mat-form-field class="form-group" appearance="fill">
                         <mat-label>Phone Number</mat-label>
-                        <input matInput placeholder="Number" formControlName="phone" required>
+                        <input matInput type="number" placeholder="Number" formControlName="phone" required>
+                        <mat-error *ngIf="signupForm.get('phone')?.hasError('max') || signupForm.get('phone')?.hasError('min') ">Please enter valid phone number!</mat-error>
                         <mat-error *ngIf="signupForm.get('phone')?.hasError('required')">Phone Number is required</mat-error>
                     </mat-form-field>
                 </div>
